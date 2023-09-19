@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """
+Module for testing the BaseModel class.
 """
 from models.base_model import BaseModel
 import unittest
@@ -11,10 +12,12 @@ import os
 
 class test_basemodel(unittest.TestCase):
     """
+    Defines tests for the BaseModel class.
     """
 
     def __init__(self, *args, **kwargs):
         """
+        Initialize the test class with the BaseModel name and class.
         """
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
@@ -22,10 +25,15 @@ class test_basemodel(unittest.TestCase):
 
     def setUp(self):
         """
+        Set up method for the test cases.
         """
         pass
 
     def tearDown(self):
+        """
+        Clean up method after each test case is run.
+        Removes the 'file.json' if it exists.
+        """
         try:
             os.remove('file.json')
         except Exception:
@@ -33,12 +41,14 @@ class test_basemodel(unittest.TestCase):
 
     def test_default(self):
         """
+        Test the default initialization of BaseModel.
         """
         i = self.value()
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
         """
+        Test BaseModel instantiation with **kwargs.
         """
         i = self.value()
         copy = i.to_dict()
@@ -47,6 +57,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_kwargs_int(self):
         """
+        Test BaseModel instantiation with an integer key in **kwargs.
         """
         i = self.value()
         copy = i.to_dict()
@@ -55,7 +66,9 @@ class test_basemodel(unittest.TestCase):
             new = BaseModel(**copy)
 
     def test_save(self):
-        """ Testing save """
+        """
+        Test the save method of BaseModel.
+        """
         i = self.value()
         i.save()
         key = self.name + "." + i.id
@@ -65,6 +78,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_str(self):
         """
+        Test the string representation of BaseModel.
         """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
@@ -72,6 +86,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_todict(self):
         """
+        Test the `to_dict` method of BaseModel.
         """
         i = self.value()
         n = i.to_dict()
@@ -79,6 +94,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_kwargs_none(self):
         """
+        Test BaseModel instantiation with None key in **kwargs.
         """
         n = {None: None}
         with self.assertRaises(TypeError):
@@ -86,6 +102,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_kwargs_one(self):
         """
+        Test BaseModel instantiation with a single key-value pair in **kwargs.
         """
         n = {'Name': 'test'}
         with self.assertRaises(KeyError):
@@ -93,18 +110,21 @@ class test_basemodel(unittest.TestCase):
 
     def test_id(self):
         """
+        Test the id attribute type of BaseModel.
         """
         new = self.value()
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
         """
+        Test the `created_at` attribute type of BaseModel.
         """
         new = self.value()
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
         """
+        Test the `updated_at` attribute type of BaseModel.
         """
         new = self.value()
         self.assertEqual(type(new.updated_at), datetime.datetime)
