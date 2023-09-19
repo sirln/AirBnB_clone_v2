@@ -17,14 +17,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return self.__objects
-        else:
-            filtered_objects = {}
-            for key, obj in self.__objects.items():
-                if isinstance(obj, cls):
-                    filtered_objects[key] = obj
-                return filtered_objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -67,5 +60,5 @@ class FileStorage:
         """deletes the obj from __objects if it exists."""
         try:
             del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
-        except KeyError: """(AttributeError, KeyError):"""
+        except (AttributeError, KeyError):
             pass
