@@ -67,5 +67,5 @@ class FileStorage:
         """deletes the obj from __objects if it exists."""
         try:
             del self.__objects["{}.{}".format(type(obj).__name__, obj.id)]
-        except (AttributeError, KeyError):
+        except KeyError: """(AttributeError, KeyError):"""
             pass
