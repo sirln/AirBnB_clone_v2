@@ -2,10 +2,10 @@
 '''
 Console unittest module
 '''
+import os, sys
 import unittest
 from console import HBNBCommand
 from io import StringIO
-import sys
 
 
 class TestHBNBCommand(unittest.TestCase):
@@ -15,19 +15,31 @@ class TestHBNBCommand(unittest.TestCase):
 
     def setUp(self):
         """Set up testing environment"""
+        try:
+            os.rename("siso.json", "tmp")
+        except IOError:
+            pass
+
         self.hbnb_cmd = HBNBCommand()
 
-    '''
     def test_create_no_class(self):
         """Test 'create' with no class argument"""
-        with self.assertRaises(SystemExit):
-            self.hbnb_cmd.onecmd("create")
+        backup = sys.stdout
+        sys.stdout = StringIO()
+        self.hbnb_cmd.onecmd("create")
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, "** class name missing **")
+        sys.stdout = backup
 
     def test_create_invalid_class(self):
         """Test 'create' with invalid class argument"""
-        with self.assertRaises(SystemExit):
-            self.hbnb_cmd.onecmd("create InvalidClass")
-    '''
+        backup = sys.stdout
+        sys.stdout = StringIO()
+        self.hbnb_cmd.onecmd("create InvalidClass")
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, "** class doesn't exist **")
+        sys.stdout = backup
+
 
     def test_create_string_param(self):
         """Test 'create' with string parameters"""
