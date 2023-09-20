@@ -15,7 +15,9 @@ class test_state(test_basemodel):
         self.name = "State"
         self.value = State
 
-'''    def test_name3(self):
+    '''
+    def test_name3(self):
         """ Tests if 'name' attribute is a string. """
         new = self.value()
-        self.assertEqual(type(new.name), str)'''
+        self.assertEqual(type(new.name), str)
+    '''
