@@ -7,14 +7,14 @@ from sqlalchemy import Column, String, ForeignKey
 
 
 class City(BaseModel, Base):
-    """ The class City representation of MySql Database. 
+    """ The class City representation of MySql Database.
 
     Inherits from SQLAlchemy Base and links to the MySql table cities.
 
     Attributes:
-    __tablename__(str): Table name to store cities. 
+    __tablename__(str): Table name to store cities.
     name(str): The name of the city.
-    state_id(str): The state id of the city. 
+    state_id(str): The state id of the city.
     """
 
     __tablename__ = "cities"
