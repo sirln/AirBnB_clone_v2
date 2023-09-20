@@ -2,6 +2,16 @@
 '''
 
 '''
+import os
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.base_model import Base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage:
@@ -34,7 +44,7 @@ class DBStorage:
         env = os.getenv('HBNB_ENV')
 
         connection_string = f"mysql+mysqldb://{user}:{pwd}@{host}/{db}"
-        self.__engine = create_engine(connection_string, pool_pre_ping=True)
+        self.__engine = create_engine(connection_string)
 
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -104,3 +114,7 @@ class DBStorage:
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(Session)
         self.__session = Session()
+
+    def close(self):
+        '''Close the current session.'''
+        self.__session.close()
