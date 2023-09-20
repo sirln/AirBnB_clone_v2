@@ -154,6 +154,7 @@ class HBNBCommand(cmd.Cmd):
             except (ValueError, TypeError):
                 pass
         new_instance = HBNBCommand.classes[commands[0]](**kwargs)
+        storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
