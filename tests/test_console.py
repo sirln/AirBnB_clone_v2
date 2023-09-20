@@ -2,7 +2,8 @@
 '''
 Console unittest module
 '''
-import os, sys
+import os
+import sys
 import unittest
 from console import HBNBCommand
 from io import StringIO
@@ -39,7 +40,6 @@ class TestHBNBCommand(unittest.TestCase):
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, "** class doesn't exist **")
         sys.stdout = backup
-
 
     def test_create_string_param(self):
         """Test 'create' with string parameters"""
