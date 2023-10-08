@@ -1,34 +1,40 @@
 #!/usr/bin/env bash
-# Script that sets up the web servers for deployment
-
-# Install Nginx if not already installed
+# ---- Updating package list ----
 sudo apt-get update
+# ---- Installing ngix web server ----
 sudo apt-get -y install nginx
 
-# Create the folder /data/ if it doesn’t already exist
-# Create the folder /data/web_static/ if it doesn’t already exist
-# Create the folder /data/web_static/releases/ if it doesn’t already exist
-# Create the folder /data/web_static/releases/test/ if it doesn’t already exist
-# Create the folder /data/web_static/shared/ if it doesn’t already exist
+# ---- Creating folders /data/web_static/releases/test/
+# and /data/web_static/shared/ if they don’t already exist ----
 sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
 
-# Create a fake HTML file /data/web_static/releases/test/index.html
-echo '<html>
+# ---- Creating a fake HTML file ----
+echo -e "<html>
   <head>
   </head>
   <body>
-    Alx Software Engineering 2023
+    You can also find me <a href='https://www.sirlawren.com'>here</a>
   </body>
-</html>' > /data/web_static/releases/test/index.html
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
-# Creating a symbolic link
+# ---- Creating a symbolic link ----
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
-# Giving ownership of the /data/ folder to ubuntu user AND Group
-sudo chown -hR ubuntu:ubuntu /data/
+# ---- Assigning /data directory ownership to ubuntu user & group ----
+sudo chown -R ubuntu:ubuntu /data/
 
-# Updating the Nginx Configuration
-sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+# ---- Updating the Nginx Configuration ----
+FILE="/etc/nginx/sites-available/default"
+ALIAS="/data/web_static/current/;"
+STATIC="location /hbnb_static {\n\t\t\talias $ALIAS \n\t}"
+if ! sudo grep "hbnb_static" "$FILE"; then
+    sudo sed -i "/^\s*server_name.*;/a \\\n\t$STATIC" "$FILE"
+fi
 
 # Restart Nginx
 sudo service nginx restart
+
+# ---- Message if Nginx configuration update complete ----
+echo "--------------------------------------"
+echo "| Nginx configuration update complete |"
+echo "--------------------------------------"
