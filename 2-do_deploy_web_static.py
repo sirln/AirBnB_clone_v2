@@ -25,7 +25,7 @@ def do_deploy(archive_path):
 
     # Upload the archive to the /tmp/ directory of the web server
     try:
-        put(archive_path,'/tmp/')
+        put(archive_path, '/tmp/')
         archive_name = archive_path.split('/')[-1]
         no_ext_name = archive_name.split('.')[0]
         release_dir = f'/data/web_static/releases/{no_ext_name}'
