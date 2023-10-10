@@ -38,6 +38,12 @@ def do_deploy(archive_path):
         # Delete the archive from the web server
         run(f'rm /tmp/{archive_name}')
 
+        # Move dir and files  in web_static dir to the parent directory
+        sudo(f'mv {release_dir}/web_static/* {release_dir}')
+
+        # Delete web_static directory
+        sudo(f'rm -rf {release_dir}/web_static')
+
         # Delete the symbolic link /data/web_static/current from the web server
         sudo('rm -rf /data/web_static/current')
 
