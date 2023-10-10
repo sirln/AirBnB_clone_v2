@@ -61,7 +61,7 @@ def do_deploy(archive_path):
         run(f'rm /tmp/{archive_name}')
 
         # Move files from web_static dir to the parent directory
-        #run(f'mv {release_dir}/web_static/* {release_dir}/')
+        # run(f'mv {release_dir}/web_static/* {release_dir}/')
         run(f'rsync -av {release_dir}/web_static/* {release_dir}/')
 
         # Delete web_static directory
