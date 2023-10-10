@@ -6,7 +6,8 @@ import os
 from fabric.api import *
 
 env.hosts = ['54.164.87.125', '34.229.56.141']
-
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/id_rsa'
 
 def do_deploy(archive_path):
     """
@@ -58,3 +59,4 @@ def do_deploy(archive_path):
     except Exception as e:
         print(f'An error occurred: {e}')
         return False
+    return True
