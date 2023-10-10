@@ -23,12 +23,12 @@ def do_deploy(archive_path):
     if not os.path.exists(archive_path):
         return False
 
-    # Upload the archive to the /tmp/ directory of the web server
     try:
         archive_name = archive_path.split('/')[-1]
         name_no_ext = archive_name.split('.')[0]
         release_dir = f'/data/web_static/releases/{name_no_ext}'
 
+        # Upload the archive to the /tmp/ directory of the web server
         put(archive_path, f'/tmp/{archive_name}')
 
         # Uncompress the archive to the folder on the web server
@@ -38,16 +38,16 @@ def do_deploy(archive_path):
         # Delete the archive from the web server
         run(f'rm /tmp/{archive_name}')
 
-        # Move dir and files  in web_static dir to the parent directory
+        # Move files from web_static dir to the parent directory
         run(f'mv {release_dir}/web_static/* {release_dir}')
 
         # Delete web_static directory
         run(f'rm -rf {release_dir}/web_static')
 
-        # Delete the symbolic link /data/web_static/current from the web server
+        # Delete the symbolic link on the web server
         run('rm -rf /data/web_static/current')
 
-        # Create a new the symbolic link on the web server
+        # Create a new symbolic link on the web server
         run(f'ln -s {release_dir} /data/web_static/current')
 
         print('--------------------------------------------------------')
