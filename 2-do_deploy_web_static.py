@@ -43,7 +43,9 @@ def do_deploy(archive_path):
 
         # Create a new the symbolic link on the web server
         sudo(f'ln -s {release_dir} /data/web_static/current')
-
+        print('--------------------------------------------------------')
+        print(f'| {archive_name} deployed successfully! |')
+        print('--------------------------------------------------------')
         return True
 
     except Exception as e:
