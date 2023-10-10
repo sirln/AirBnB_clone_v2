@@ -32,23 +32,24 @@ def do_deploy(archive_path):
         put(archive_path, f'/tmp/{archive_name}')
 
         # Uncompress the archive to the folder on the web server
-        sudo(f'mkdir -p {release_dir}')
-        sudo(f'tar -xzf /tmp/{archive_name} -C {release_dir}')
+        run(f'mkdir -p {release_dir}')
+        run(f'tar -xzf /tmp/{archive_name} -C {release_dir}')
 
         # Delete the archive from the web server
         run(f'rm /tmp/{archive_name}')
 
         # Move dir and files  in web_static dir to the parent directory
-        sudo(f'mv {release_dir}/web_static/* {release_dir}')
+        run(f'mv {release_dir}/web_static/* {release_dir}')
 
         # Delete web_static directory
-        sudo(f'rm -rf {release_dir}/web_static')
+        run(f'rm -rf {release_dir}/web_static')
 
         # Delete the symbolic link /data/web_static/current from the web server
-        sudo('rm -rf /data/web_static/current')
+        run('rm -rf /data/web_static/current')
 
         # Create a new the symbolic link on the web server
-        sudo(f'ln -s {release_dir} /data/web_static/current')
+        run(f'ln -s {release_dir} /data/web_static/current')
+
         print('--------------------------------------------------------')
         print(f'| {archive_name} deployed successfully! |')
         print('--------------------------------------------------------')
