@@ -50,12 +50,20 @@ def dynamic_routing_number(n):
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def dynamic_routing_number_template(n):
+    '''
+    Display a HTML page only if n is an integer
+    H1 tag: “Number: n” inside the tag BODY
+    '''
     number = n
     return render_template('5-number.html', number)
 
 
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
 def dynamic_routing_number_odd_or_even(n):
+    '''
+    Display a HTML page only if n is an integer
+    H1 tag: “Number: n is even|odd” inside the tag BODY
+    '''
     number = n
     if (n % 2) == 0:
         type = 'even'
