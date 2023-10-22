@@ -64,12 +64,12 @@ def dynamic_routing_number_odd_or_even(n):
     Display a HTML page only if n is an integer
     H1 tag: “Number: n is even|odd” inside the tag BODY
     '''
-    number = n
+    num = n
     if (n % 2) == 0:
         type = 'even'
     else:
         type = 'odd'
-    return render_template('6-number_odd_or_even.html', number=number, type=type)
+    return render_template('6-number_odd_or_even.html', num=num, type=type)
 
 
 if __name__ == '__main__':
