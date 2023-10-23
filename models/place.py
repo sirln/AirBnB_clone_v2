@@ -1,9 +1,23 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+from os import getenv
 from models.review import Review
+from models.amenity import Amenity
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
+
+table_association = Table('place_amenity', Base.metadata,
+                      Column('place_id',
+                             String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True,
+                             nullable=False),
+                      Column('amenity_id',
+                             String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -37,3 +51,25 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        # For DBStorage: relationship with Amenity
+        # using the secondary table place_amenity
+        amenities = relationship(
+                                    "Amenity",
+                                    secondary="place_amenity",
+                                    viewonly=False
+                                )
+    else:
+        # For FileStorage: handle amenities attribute using amenity_ids
+        @property
+        def amenities(self):
+            """ Returns the list of Amenity instances based on amenity_ids. """
+            all_ame = storage.all(Amenity).values()
+            return [ame for ame in all_ame if amenity.id in self.amenity_ids]
+
+        @amenities.setter
+        def amenities(self, value):
+            """ Handles adding Amenity.id to amenity_ids. """
+            if isinstance(value, Amenity):
+                self.amenity_ids.append(value.id)
