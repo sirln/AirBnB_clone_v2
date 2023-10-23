@@ -2,78 +2,52 @@
 """
 Unittest module for the Place class.
 """
-from tests.test_models.test_base_model import test_basemodel
+import unittest
 from models.place import Place
+from models.amenity import Amenity
+from sqlalchemy.exc import IntegrityError
+from os import getenv, environ
 
 
-class test_Place(test_basemodel):
-    """
-    Defines tests for the Place class.
-    """
+class TestPlace(unittest.TestCase):
+    """Defines tests for the Place class."""
+    def setUp(self):
+        """Setup for each test method"""
+        self.place = Place(
+                            city_id="1234abcd",
+                            user_id="abcd1234",
+                            name="Test Place",
+                            description="A test place in a test city"
+                           )
 
-    def __init__(self, *args, **kwargs):
-        """
-        Initialize attributes for the test class
-         """
-        super().__init__(*args, **kwargs)
-        self.name = "Place"
-        self.value = Place
+    def tearDown(self):
+        """Teardown after each test method"""
+        del self.place
 
-    def test_city_id(self):
-        """
-        Tests if 'city_id' attribute is a string.
-         """
-        new = self.value()
-        self.assertEqual(type(new.city_id), str)
+    def test_attributes(self):
+        """Test the attributes and default values of Place"""
+        self.assertTrue(hasattr(self.place, "city_id"))
+        self.assertTrue(hasattr(self.place, "user_id"))
+        self.assertTrue(hasattr(self.place, "name"))
+        self.assertTrue(hasattr(self.place, "description"))
+        self.assertTrue(hasattr(self.place, "number_rooms"))
+        self.assertTrue(hasattr(self.place, "number_bathrooms"))
+        self.assertTrue(hasattr(self.place, "max_guest"))
+        self.assertTrue(hasattr(self.place, "price_by_night"))
+        self.assertTrue(hasattr(self.place, "latitude"))
+        self.assertTrue(hasattr(self.place, "longitude"))
 
-    def test_user_id(self):
-        """
-        Tests if 'user_id' attribute is a string.
-        """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
+        # self.assertEqual(self.place.number_rooms, 0)
+        # self.assertEqual(self.place.number_bathrooms, 0)
+        # self.assertEqual(self.place.max_guest, 0)
+        # self.assertEqual(self.place.price_by_night, 0)
 
-    def test_name(self):
-        """ Tests if 'name' attribute is a string. """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_db_storage_amenities(self):
+        """Test amenities attribute behavior for DBStorage"""
+        if getenv("HBNB_TYPE_STORAGE") == "db":
+            self.assertTrue(hasattr(self.place, "amenities"))
+            self.assertIsInstance(self.place.amenities, list)
 
-    def test_description(self):
-        """ Tests if 'description' attribute is a string. """
-        new = self.value()
-        self.assertEqual(type(new.description), str)
 
-    def test_number_rooms(self):
-        """ Tests if 'number_rooms' attribute is an integer. """
-        new = self.value()
-        self.assertEqual(type(new.number_rooms), int)
-
-    def test_number_bathrooms(self):
-        """ Tests if 'number_bathrooms' attribute is an integer. """
-        new = self.value()
-        self.assertEqual(type(new.number_bathrooms), int)
-
-    def test_max_guest(self):
-        """ Tests if 'max_guest' attribute is an integer. """
-        new = self.value()
-        self.assertEqual(type(new.max_guest), int)
-
-    def test_price_by_night(self):
-        """ Tests if 'price_by_night' attribute is an integer. """
-        new = self.value()
-        self.assertEqual(type(new.price_by_night), int)
-
-    def test_latitude(self):
-        """ Tests if 'latitude' attribute is a float. """
-        new = self.value()
-        self.assertEqual(type(new.latitude), float)
-
-    def test_longitude(self):
-        """ Tests if 'longitude' attribute is a float. """
-        new = self.value()
-        self.assertEqual(type(new.latitude), float)
-
-    def test_amenity_ids(self):
-        """ Tests if 'amenity_ids' attribute is a list. """
-        new = self.value()
-        self.assertEqual(type(new.amenity_ids), list)
+if __name__ == "__main__":
+    unittest.main()

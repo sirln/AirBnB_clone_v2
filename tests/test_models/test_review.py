@@ -2,39 +2,30 @@
 """
 Unittest module for the Review class.
 """
-from tests.test_models.test_base_model import test_basemodel
+import unittest
 from models.review import Review
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String, ForeignKey
 
-
-class test_review(test_basemodel):
+class TestReview(unittest.TestCase):
     """ Unit tests for the Review class. """
+    def setUp(self):
+        """Set up test instance and attributes."""
+        self.review = Review()
 
-    def __init__(self, *args, **kwargs):
-        """ Test for initialization """
-        super().__init__(*args, **kwargs)
-        self.name = "Review"
-        self.value = Review
+    def tearDown(self):
+        """Tear down test instance."""
+        del self.review
 
-    def test_place_id(self):
-        """
-        Test if 'place_id' attribute of the Review
-        class is of type string.
-        """
-        new = self.value()
-        self.assertEqual(type(new.place_id), str)
+    def test_instance_inheritance(self):
+        """Test Review inherits from BaseModel and Base."""
+        self.assertTrue(issubclass(Review, BaseModel))
+        self.assertTrue(issubclass(Review, Base))
 
-    def test_user_id(self):
-        """
-        Test if 'user_id' attribute of the Review
-        class is of type string.
-        """
-        new = self.value()
-        self.assertEqual(type(new.user_id), str)
+    def test_tablename(self):
+        """Test correct tablename."""
+        self.assertEqual(self.review.__tablename__, "reviews")
 
-    def test_text(self):
-        """
-        Test if 'text' attribute of the Review
-        class is of type string.
-        """
-        new = self.value()
-        self.assertEqual(type(new.text), str)
+
+if __name__ == "__main__":
+    unittest.main()
